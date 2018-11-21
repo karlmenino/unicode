@@ -19,20 +19,15 @@
 <table>
     <tbody>
     <tr>
-        <% for (int i = 0; i < 256; i++){%>
-        <%if (i<=32){%>
+        <c:forEach var="i" begin="0" end="255">
+
         <td>
-            <div class="autre"><%=i%></div>
-            <div class="chose">666</div>
-                <%}else{%>
-        <td>
-            <div class="autre"><%=i%></div>
-            <div class="chose">&#<%=i%></div>
-        </td>
-        <%}%>
-        <%if (i%32==0&&i!=0) {%>
+            <div class="autre">${i}</div>
+            <div class="chose">&#${i<36?0:i}</div>
+        <c:if test="${i%32==0&&i!=0}">
     </tr><tr>
-        <%}}%>
+        </c:if>
+    </c:forEach>
     </tr>
     </tbody>
 </table>
