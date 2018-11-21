@@ -19,48 +19,58 @@ l'affiche du film dont l'identifiant est **n**
 
 
 
-###### Créer une serlvet qui affiche le détail d'un film
-* Titre
-* Affiche
-* Note
-
-**GET** `http://localhost:8080/film?id=n` renvoie le détail du film dont
-l'identifiant est **n**
 
 
+Voici un bout de code HTML qui présente à la fois le code d’un caractère 
+et une représentation de celui-ci sous la forme d’une entité HTML (dérivée du SGML). 
+Une entité HTML est une série de caractères qui représentent un autre caractère (appelée également référence de caractère).
 
-###### Créer une servlet et son formulaire associé qui permettent de rechercher un film par titre
+La syntaxe générale d’une entité est composée de 4 symboles réunis (sans espace): &#n; 
+où n représente le code décimal du caractère en question. Par exemple &#64 désigne le caractère @ (64 est l’index de ce caractère dans la table unicode)
 
-Faire en sorte que le critère de recherche ne soit pas sensible à la casse (aux majuscules et minuscules) et qu'il constitue une partie du résultat
+...
+<h1>TABLE DE CARACTERES</h1>
+<table>
+<tbody>
+<tr> <td><div>64</div> <div>&#64;</div> </td>
+     <td><div>65</div> <div>&#65;</div></td>
+</tr>
+</tbody>
+</table>
+...
 
-Par exemple, la recherche du titre sur 'ju' pourra renvoyer des résultats comme 'Le juge et l'Assasin', 'La jurée', etc.
+Exemple de rendu par le navigateur : codeCar64et65
 
+1/ Concevoir un programme qui présente la table de caractères de 0 à 255 :
+ Attention, avant 32 les codes ne sont pas représentables (ce sont des codes de contrôles), 
+ vous devrez donc trouver une façon de les représenter et/ou les différencier. 
+ Vous devrez séparer ce qui est de l’ordre de la structuration des données (document HTML) des instructions de présentation (CSS).
+  Pour mettre en forme les cellules du tableau (les td) n’hésitez pas à jouer sur les bordures.
 
-###### Gestion de la session utilisateur
+Voir :
 
-Dans la session de l'utilisateur enregistrez l'ensemble des films dont il a
-consulté le détail, l'utilisateur peut consulter son historique.
+    border-style
 
-###### Gestion des ressources externes
+    couleurs de fond et autres paramètres comme margin
 
-Stocker les affiches dans un dossier de l'application n'est pas la
-meilleure idée qui soit : si on peut ajouter des films et qu'on met
-à jour l'application, toutes les affiches associées aux films seront
-effacées. Paramétrer l'application pour que les affiches soient stockées
-et récupérées dans un dossier externe et indépendant.
+	ne pas présenter l’ensemble de 255 caractères sur une seule ligne (un seul <tr>) !
 
-###### Gestion alternative des URLs
+2/ Votre application devra permettre à l’utilisateur de :
 
-L'usage de paramètres dans l'URL n'est pas toujours souhaitable : plus difficile à lire par un humain et pas toujours bien pris en compte par les moteurs de recherche.
+    Choisir une représentation des codes numériques en : décimal ou hexadécimal
 
-Bien souvent les paramètres de l'url (_query string_) peuvent être évités par transformation en chemin (_path_) ; on parle alors d'_URL Semantic_.
+    La possibilité de sélectionner de 1 à plusieurs plages prédéfinies Voir unicode charts, par exemple parmi  (prévoir des liens préparés):
 
-Pour récupérer une affiche ou le détail d'un film, plutôt que d'utiliser un paramètre de type
-**?id=n**, on souhaite que l'id fasse partie de l'URL :
+arabe
+tibetain
+katakana
+hiragana
 
-**GET** `http://localhost:8080/affiche/2` pour obtenir l'affiche du film
-2
+ou explicite (debut et fin, titre) – prévoir un formulaire afin de recueillir ces données :
 
-ou
+debut (un entier : indice de début de la plage à présenter)
+fin   (un entier : indice de fin de la plage)
+titre (chaîne, affichée en début du tableau de caractères)
 
-**GET** `http://localhost:8080/detail/5` pour obtenir le détail du film 5
+	les données seront filtrées côté serveur (pas d’injection HTML) et validées (la valeur de fin doit être supérieure à la valeur de debut et le titre non vide). 
+	voir : https://stackoverflow.com/questions/240546/remove-html-tags-from-a-string
